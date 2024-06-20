@@ -9,10 +9,9 @@ public class PlayerController : MonoBehaviour
     public float maxLifeValue;               // 設定玩家最高生命值
     public float lifeHpChangeUnit;           // 設定每次改變生命值的單位
 
-    [Header("UI控制元件")]
-    public GameManager gameManager;
-
     float lifeValue;
+
+    public static Action<float> onHpChange;   // 設定一個動作，可以通知別的程式，我們設計一個改變生命值的通知動作
 
     void Start()
     {
@@ -25,7 +24,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             lifeValue -= lifeHpChangeUnit;
-            gameManager.UpdateLifeBar(lifeValue / maxLifeValue); // 更新血條
+            onHpChange?.Invoke(lifeValue / maxLifeValue); // 告訴所有程式，生命值改變了
         }
     }
 }
